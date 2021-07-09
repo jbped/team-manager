@@ -1,10 +1,10 @@
-DELETE DATABASE team_manager IF EXISTS;
+DROP DATABASE IF EXISTS team_manager;
 CREATE DATABASE team_manager;
-USE DATABASE team_manager;
+USE team_manager;
 
-DELETE TABLE employee IF EXISTS; 
-DELETE TABLE role IF EXISTS;
-DELETE TABLE department IF EXISTS;
+DROP TABLE IF EXISTS employee; 
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS department;
 
 CREATE TABLE department (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -25,5 +25,5 @@ CREATE TABLE employee (
     last_name VARCHAR(30) NOT NULL,
     role_id INT,
     manager_id INT,
-    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id);
+    CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
