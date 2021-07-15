@@ -1,12 +1,17 @@
+// ======================================================================
+// REQUIRED NPMS
+// ======================================================================
 const inquirer = require("inquirer");
 const table = require('console.table');
-
 const q = require("./src/inquirer");
+
+// ======================================================================
+// CUSTOM RESOURCES
+// ======================================================================
 const r = require("./utils/roles");
 const d = require("./utils/departments");
 const e = require("./utils/employees")
 const { inqList } = require("./utils/lists");
-
 
 const menuLogic = ({ mainMenu }) => {
     switch(mainMenu){
