@@ -1,9 +1,5 @@
 // Inquirer Questions
 const inquirer = require("inquirer");
-const queries = require("../utils/queries");
-
-let empArr = ["emp", "arr"]
-// queries.empArr()
 
 // Starting Questions
 const mainMenu = [
@@ -30,10 +26,6 @@ const empOrderBy = [
         choices: ["Ascending", "Descending"]
     }
 ]
-
-// Show Departments
-
-// Show Roles
 
 // Add New Employee
 const addEmp = [
@@ -72,7 +64,7 @@ const addEmp = [
         type: "list",
         name: "empManager",
         messasge: "Who is the employee's manager?",
-        choices: empArr
+        choices: ["choice"]
     }
 ]
 
@@ -138,25 +130,86 @@ const updateEmp = [
         type: "list",
         name:"selectEmp",
         message:"Which employee do you wish to update?",
-        choices: empArr
+        choices: ["resultsArr"]
 
     },
     {
         type:"list",
         name:"updateOptions",
         message: "What do you want to update?",
-        list: ["Name", "Role", "Manager"]
+        choices: ["Name", "Role", "Manager"]
     },
     {
         type: "input",
         name:"updateFirstName",
-        message:"What is the first name of the employee you wish to add?",
+        message:"What would you like to change the employees first name to?",
         validate: firstNameValidate => {
             if(!firstNameValidate || typeof firstNameValidate !== "string") {
                 return "Please provide the employee's first name."
             }
+            return true;
+        },
+        when: ({updateOptions}) => {
+            if (updateOptions === "Name") {
+                return true
+            }
+            return false;
+        }
+    },
+    {
+        type: "input",
+        name:"updateLastName",
+        message:"What would you like to change the employees last name to?",
+        validate: lastNameValidate => {
+            if(!lastNameValidate || typeof lastNameValidate !== "string") {
+                return "Please provide the employee's first name."
+            }
+            return true;
+        },
+        when: ({updateFirstName}) => {
+            if (updateFirstName) {
+                return true
+            }
+            return false;
+        }
+    },
+    {
+        type: "input",
+        name:"updateRole",
+        message:"What is the employee's new Role?",
+        choices: ["choice"],
+        validate: firstNameValidate => {
+            if(!firstNameValidate || typeof firstNameValidate !== "string") {
+                return "Please provide the employee's first name."
+            }
+            return true;
+        },
+        when: ({updateOptions}) => {
+            if (updateOptions === "Role") {
+                return true
+            }
+            return false;
+        }
+    },
+    {
+        type: "list",
+        name:"updateManager",
+        message:"Who is the employee's new Manager?",
+        choices: ["choice"],
+        validate: firstNameValidate => {
+            if(!firstNameValidate || typeof firstNameValidate !== "string") {
+                return "Please provide the employee's first name."
+            }
+            return true;
+        },
+        when: ({updateOptions}) => {
+            if (updateOptions === "Manager") {
+                return true
+            }
+            return false;
         }
     },
 ]
+    
 
 module.exports = { empOrderBy, mainMenu, addEmp, addDept, addRole, updateEmp };
