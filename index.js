@@ -12,26 +12,62 @@ const r = require("./utils/roles");
 const d = require("./utils/departments");
 const e = require("./utils/employees")
 const { inqList } = require("./utils/lists");
+const { empTable, roleTable, deptTable } = require("./src/tableNames");
 
 const menuLogic = ({ mainMenu }) => {
     switch(mainMenu){
         case "Show Employees": 
-            inquirer.prompt(q.empOrderBy).then(order => e.getEmpsOrdered(order))
+            inquirer.prompt(q.empOrderBy).then(order => e.getEmpsOrdered(order)).then(results => {
+                console.log(empTable)
+                console.table(results)
+                startApp()
+            })
             break;
         case "Show All Departments":
-            d.getDept();
+            d.getDept().then(results => {
+                console.log(deptTable)
+                console.table(results)
+                startApp()
+            });
             break;
         case "Show All Roles":
-            r.getRoles();
+            r.getRoles().then(results => {
+                console.log(roleTable)
+                console.table(results)
+                startApp()
+            });
             break;
         case "Add New Employee":
-            inquirer.prompt(q.addEmp).then(newEmp => queries.addEmp(newEmp));
+            inqList().then((resultsArr) => {
+                q.addEmp[2].choices = resultsArr[1];
+                q.addEmp[3].choices = resultsArr[0];
+
+                return q.addEmp
+            })
+            .then(addEmp => {
+                return inquirer.prompt(addEmp)
+            })
+            .then(data => {
+                console.log(data)
+            })
             break;
         case "Add New Department":
-            inquirer.prompt(q.addDept).then(newDept => queries.addDept(newDept));
+            inquirer.prompt(q.addDept).then(newDept => d.addDept(newDept));
             break;
         case "Add New Role":
-            inquirer.prompt(q.addRole).then(newRole => queries.addRole(newRole));
+            inqList().then((resultsArr) => {
+                // console.log(resultsArr)
+                q.addRole[2].choices = resultsArr[2];
+
+                return q.addRole
+            })
+            .then(addRole => {
+                return inquirer.prompt(addRole)
+            })
+            .then(data => {
+                console.log(data.roleName + "has been added as a role!")
+                startApp();
+            })
             break;
         case "Update Employee Role":
             inqList().then((resultsArr) => {
@@ -48,6 +84,9 @@ const menuLogic = ({ mainMenu }) => {
                 console.log(data)
             })
             break;
+        case "Update Employee Role":
+            quitApp();
+            break;
     }
 }
 
@@ -56,6 +95,11 @@ const startApp = () => {
     .then(answers => {
         return menuLogic(answers);
     })
+}
+
+const quitApp = () => {
+    // console.log("Goodbye!");
+    process.exit();
 }
 
 startApp();

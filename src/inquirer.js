@@ -9,7 +9,7 @@ const mainMenu = [
         type: "list",
         name: "mainMenu",
         message: "Select one from the list below:",
-        choices: ["Show Employees", "Show All Departments", "Show All Roles", new inquirer.Separator(), "Add New Employee", "Add New Department", "Add New Role", new inquirer.Separator(), "Update Employee Role", new inquirer.Separator()]
+        choices: ["Show Employees", "Show All Departments", "Show All Roles", new inquirer.Separator(), "Add New Employee", "Add New Department", "Add New Role", new inquirer.Separator(), "Update Employee Role", new inquirer.Separator(),"EXIT APPLICATION", new inquirer.Separator()]
     }
 ]
 
@@ -63,8 +63,7 @@ const addEmp = [
         type: "list",
         name: "roleType",
         message: "What is the employees role?",
-        // CREATE GET ROLES FUNCTION!!!!
-        choices: ["List", "Will", "Be", "Here"] /*`${getRoles()}`,*/
+        choices: ["List", "Will", "Be", "Here"] 
     },
     {
         type: "list",
@@ -113,7 +112,8 @@ const addRole = [
         name: "roleSalary",
         message: `What is the salary for this role?`,
         validate: roleSalaryValidate => {
-            if(!roleSalaryValidate || typeof roleSalaryValidate !== "number") {
+            let regEx = /[^0-9]/;
+            if(!roleSalaryValidate || roleSalaryValidate.match(regEx)) {
                 return "Please provide the salary for the role."
             } else {
                 return true
@@ -124,8 +124,9 @@ const addRole = [
         type: "list",
         name: "roleDept",
         message: `Which department does this role belong to?`,
+        choices: ["choice"],
         validate: roleDeptValidate => {
-            if(!roleDeptValidate || typeof roleDeptValidate !== "number") {
+            if(!roleDeptValidate) {
                 return "Please provide the department for the role."
             } else {
                 return true
@@ -143,7 +144,6 @@ const updateEmp = [
         name:"selectEmp",
         message:"Which employee do you wish to update?",
         choices: ["resultsArr"]
-
     },
     {
         type:"list",

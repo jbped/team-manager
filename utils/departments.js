@@ -8,12 +8,14 @@ const table = require('console.table');
 // GET DEPARTMENTS
 // ======================================================================
 const getDept = () => {
-    const sql = `SELECT dept_name AS Department FROM department ORDER BY dept_name ASC;`
-    db.query(sql, (err, rows) => {
-        if (err) {
-            console.log ({ error: err.messsage });
-        }
-        console.table(rows)
+    return new Promise (function(resolve, reject) {
+        const sql = `SELECT dept_name AS Department FROM department ORDER BY dept_name ASC;`
+        db.query(sql, (err, rows) => {
+            if (err) {
+                console.log ({ error: err.messsage });
+            }
+            resolve(rows)
+        })
     })
 }
 
