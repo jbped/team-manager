@@ -122,7 +122,7 @@ const addRole = [
     }, 
     {
         type: "list",
-        name: "roleDept",
+        name: "deptName",
         message: `Which department does this role belong to?`,
         choices: ["choice"],
         validate: roleDeptValidate => {

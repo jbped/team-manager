@@ -65,8 +65,11 @@ const menuLogic = ({ mainMenu }) => {
                 return inquirer.prompt(addRole)
             })
             .then(data => {
-                console.log(data.roleName + "has been added as a role!")
-                startApp();
+                // console.log(data)
+                return d.getDeptId(data);
+            }).then(data => {
+                return r.addRole(data)
+                console.log(data.roleName + " has been added as a role!")
             })
             break;
         case "Update Employee Role":

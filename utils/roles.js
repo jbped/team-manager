@@ -21,9 +21,9 @@ const getRoles = () => {
 // Add New Role
 const addRole = newRole => {
     console.log(newRole)
-    const sql = `INSERT INTO department (role_name) 
-                    VALUES (?)`
-    const params = [newRole.roleName]
+    const sql = `INSERT INTO role (title, salary, department_id) 
+                    VALUES (?, ?, ?)`
+    const params = [newRole.roleName, newRole.roleSalary, newRole.id]
     db.query(sql, params, (err, result) => {
         if (err) {
             console.log({ error: err.message })

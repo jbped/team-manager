@@ -39,4 +39,21 @@ const addDept = newDept => {
     })
 }
 
-module.exports = { getDept, addDept }
+// ======================================================================
+// GET DEPARTMENT ID BY DEPT NAME
+// ======================================================================
+const getDeptId = data => {
+    return new Promise (function(resolve, reject) {
+        const sql = `SELECT id FROM department WHERE dept_name = ?;`
+        params = [data.deptName]
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                console.log ({ error: err.messsage });
+            }
+            data.id = result[0].id
+            resolve(data)
+        })
+    })
+}
+
+module.exports = { getDept, addDept, getDeptId }
