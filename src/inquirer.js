@@ -187,7 +187,7 @@ const updateEmp = [
     },
     {
         type: "list",
-        name:"updateRole",
+        name:"roleType",
         message:"What is the employee's new Role?",
         choices: ["choice"],
         validate: firstNameValidate => {

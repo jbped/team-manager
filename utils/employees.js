@@ -84,24 +84,91 @@ const getEmpId = data => {
     return new Promise (function(resolve, reject) {
         const sql = `SELECT id FROM employee WHERE first_name = ? AND last_name = ?;`
         params = [data[0], data[data.length - 1]]
-        // console.log(data)
         db.query(sql, params, (err, result) => {
             if (err) {
                 reject({ error: err.messsage });
+                return;
             }
-            data.managerId = result[0].id
+            data.empId = result[0].id
             let success = ({
                 status: "success",
-                data: data.managerId
+                data: data.empId
             })
-            console.log(success)
+            resolve(success)
+        })
+    })
+}
+// ======================================================================
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~ UPDATE EMPLOYEE ~~~~~~~~~~~~~~~~~~~~~~~~~~
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// ======================================================================
+
+// ======================================================================
+// UPDATE EMPLOYEE NAME
+// ======================================================================
+const updateEmpName = data => {
+    return new Promise (function(resolve, reject) {
+        const sql = `UPDATE employee SET first_name = ?, last_name = ? WHERE id = ?;`
+        params = [data.updateFirstName, data.updateLastName, data.empId]
+        // console.log(data)
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                reject({ error: err.message});
+                return;
+            }
+            let success = ({
+                message:"success",
+                data:data,
+                changes:result.affectedRows
+            })
+            resolve(success)
+        })
+    })
+}
+// ======================================================================
+// UPDATE EMPLOYEE ROLE
+// ======================================================================
+const updateEmpRole = data => {
+    return new Promise (function(resolve, reject) {
+        console.log(data)
+        const sql = `UPDATE employee SET role_id = ? WHERE id = ?;`
+        params = [data.roleId, data.empId]
+        // console.log(data)
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                reject({ error: err});
+                return;
+            }
+            let success = ({
+                message:"success",
+                data:data,
+                changes:result.affectedRows
+            })
+            resolve(success)
+        })
+    })
+}
+// ======================================================================
+// UPDATE EMPLOYEE MANAGER
+// ======================================================================
+const updateEmpManager = data => {
+    return new Promise (function(resolve, reject) {
+        const sql = `UPDATE employee SET manager_id = ? WHERE id = ?;`
+        params = [data.managerId, data.empId]
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                reject({ error: err.message});
+                return;
+            }
+            let success = ({
+                message:"success",
+                data:data,
+                changes:result.affectedRows
+            })
             resolve(success)
         })
     })
 }
 
-// ======================================================================
-// UPDATE EMPLOYEE
-// ======================================================================
-
-module.exports = { getEmpsOrdered, addEmp, getEmpId }
+module.exports = { getEmpsOrdered, addEmp, getEmpId, updateEmpName, updateEmpRole, updateEmpManager }

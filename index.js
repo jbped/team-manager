@@ -56,11 +56,12 @@ const menuLogic = ({ mainMenu }) => {
                 return r.getRoleId(data) 
             })
             .then(data => {
+                console.log(data)
                 if (data.empManager === "No Manager") {
                     data.empManager = null;
                     return e.addEmp(data)
                     .then(data => {
-                        console.log(data.data.firstName + " " + data.data.lastName + " has been added as a new employee!");
+                        console.log("\n" + data.data.firstName + " " + data.data.lastName + " has been added as a new employee!" + "\n");
                         startApp()
                     })
                     .catch(err => {
@@ -68,15 +69,14 @@ const menuLogic = ({ mainMenu }) => {
                         startApp()
                     });
                 } else {
-                    managerName = data.empManager.split(" ");
+                    let managerName = data.empManager.split(" ");
                     return e.getEmpId(managerName)
                     .then(id => {
-
                         data.managerId = id.data;
                         return e.addEmp(data)
                     })
                     .then(data => {
-                        console.log(data.data.firstName + " " + data.data.lastName + " has been added as a new employee!");
+                        console.log("\n" + data.data.firstName + " " + data.data.lastName + " has been added as a new employee!" + "\n");
                         startApp()
                     })
                     .catch(err => {
@@ -137,7 +137,54 @@ const menuLogic = ({ mainMenu }) => {
                 return inquirer.prompt(updateEmp)
             })
             .then(data => {
-                console.log(data)
+                let empName = data.selectEmp.split(" ");
+                return e.getEmpId(empName).then(id => {
+                    data.empId = id.data;
+                    return data
+                })
+            })
+            .then(data => {
+                if (data.updateOptions === "Name") {
+                    return e.updateEmpName(data)
+                    .then(data => {
+                        console.log("\n" + data.data.selectEmp + "'s name has been updated to " + data.data.updateFirstName + data.data.updateLastName + "\n");
+                        startApp()
+                    })
+                    .catch(err => {
+                        console.log("\nAn Error Occurred: ", err.error + "\n");
+                        startApp()
+                    });
+                } else if (data.updateOptions === "Role"){
+                    return r.getRoleId(data)
+                    .then(newData => {
+                        return e.updateEmpRole(newData)
+                    })
+                    .then(data => {
+                        console.log("\n" + data.data.selectEmp + "'s role has been updated to " + data.data.roleType+ "\n");
+                        startApp()
+                    })
+                    .catch(err => {
+                        console.log("\nAn Error Occurred: ", err.error + "\n");
+                        startApp()
+                    });
+                } else if (data.updateOptions === "Manager"){
+                    let managerName = data.updateManager.split(" ");
+                    return e.getEmpId(managerName)
+                    .then(id => {
+                        console.log(data)
+                        data.managerId = id.data
+                        console.log("afterupdate", data)
+                        return e.updateEmpManager(data) 
+                    })
+                    .then(data => {
+                        console.log("\n" + data.data.selectEmp + "'s manager has been updated to " + data.data.updateManager + "\n");
+                        startApp()
+                    })
+                    .catch(err => {
+                        console.log("\nAn Error Occurred: ", err.error + "\n");
+                        startApp()
+                    });
+                }
             })
             break;
         case "EXIT APPLICATION":

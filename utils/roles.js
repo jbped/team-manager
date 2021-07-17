@@ -51,7 +51,7 @@ const getRoleId = data => {
     return new Promise (function(resolve, reject) {
         const sql = `SELECT id FROM role WHERE title = ?;`
         params = [data.roleType]
-        console.log(data)
+        // console.log(data)
         db.query(sql, params, (err, result) => {
             if (err) {
                 reject({ error: err.messsage });
