@@ -14,31 +14,36 @@ const e = require("./utils/employees")
 const { inqList } = require("./utils/lists");
 const { empTable, roleTable, deptTable } = require("./src/tableNames");
 
+// ======================================================================
+// LOGIC FOR MAIN MENU SELECTIONS
+// ======================================================================
+
 const menuLogic = ({ mainMenu }) => {
     switch(mainMenu){
         case "Show Employees": 
             inquirer.prompt(q.empOrderBy).then(order => e.getEmpsOrdered(order)).then(results => {
-                console.log(empTable)
+                console.table(empTable)
                 console.table(results)
                 startApp()
             })
             break;
         case "Show All Departments":
             d.getDept().then(results => {
-                console.log(deptTable)
+                console.table(deptTable)
                 console.table(results)
                 startApp()
             });
             break;
         case "Show All Roles":
             r.getRoles().then(results => {
-                console.log(roleTable)
+                console.table(roleTable)
                 console.table(results)
                 startApp()
             });
             break;
         case "Add New Employee":
             inqList().then((resultsArr) => {
+                resultsArr[0].push("No Manager");
                 q.addEmp[2].choices = resultsArr[1];
                 q.addEmp[3].choices = resultsArr[0];
 
@@ -48,11 +53,52 @@ const menuLogic = ({ mainMenu }) => {
                 return inquirer.prompt(addEmp)
             })
             .then(data => {
-                console.log(data)
+                return r.getRoleId(data) 
+            })
+            .then(data => {
+                if (data.empManager === "No Manager") {
+                    data.empManager = null;
+                    return e.addEmp(data)
+                    .then(data => {
+                        console.log(data.data.firstName + " " + data.data.lastName + " has been added as a new employee!");
+                        startApp()
+                    })
+                    .catch(err => {
+                        console.log("\nAn Error Occurred: ", err.error + "\n");
+                        startApp()
+                    });
+                } else {
+                    managerName = data.empManager.split(" ");
+                    return e.getEmpId(managerName)
+                    .then(id => {
+
+                        data.managerId = id.data;
+                        return e.addEmp(data)
+                    })
+                    .then(data => {
+                        console.log(data.data.firstName + " " + data.data.lastName + " has been added as a new employee!");
+                        startApp()
+                    })
+                    .catch(err => {
+                        console.log("\nAn Error Occurred: ", err.error + "\n");
+                        startApp()
+                    });
+                }
             })
             break;
         case "Add New Department":
-            inquirer.prompt(q.addDept).then(newDept => d.addDept(newDept));
+            inquirer.prompt(q.addDept)
+            .then(newDept => {
+                return d.addDept(newDept)
+            })
+            .then(data => {
+                console.log(data.data.deptName + " has been added as a department!");
+                startApp()
+            })
+            .catch(err => {
+                console.log("\nAn Error Occurred: ", err.error + "\n");
+                startApp()
+            });
             break;
         case "Add New Role":
             inqList().then((resultsArr) => {
@@ -69,7 +115,14 @@ const menuLogic = ({ mainMenu }) => {
                 return d.getDeptId(data);
             }).then(data => {
                 return r.addRole(data)
-                console.log(data.roleName + " has been added as a role!")
+            })
+            .then(data => {
+                console.log(data.data.roleName + " has been added as a role!")
+                startApp()
+            })
+            .catch(err => {
+                console.log("\nAn Error Occurred: ", err.error + "\n");
+                startApp()
             })
             break;
         case "Update Employee Role":
@@ -87,12 +140,15 @@ const menuLogic = ({ mainMenu }) => {
                 console.log(data)
             })
             break;
-        case "Update Employee Role":
+        case "EXIT APPLICATION":
             quitApp();
             break;
     }
 }
 
+// ======================================================================
+// START APPLICATION
+// ======================================================================
 const startApp = () => {
     inquirer.prompt (q.mainMenu)
     .then(answers => {
@@ -100,8 +156,11 @@ const startApp = () => {
     })
 }
 
+// ======================================================================
+// TERMINATE APPLICATION
+// ======================================================================
 const quitApp = () => {
-    // console.log("Goodbye!");
+    console.log("Goodbye!");
     process.exit();
 }
 

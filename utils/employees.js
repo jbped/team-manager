@@ -49,7 +49,8 @@ const getEmpsOrdered = order => {
     
         db.query(sql, (err, result) => {
             if (err) {
-                console.log({ error: err.message })
+                reject({ error: err.message })
+                return;
             }
             resolve(result)
         })
@@ -59,19 +60,43 @@ const getEmpsOrdered = order => {
 // ADD NEW EMPLOYEE
 // ======================================================================
 const addEmp = newEmp => {
-    console.log(newEmp)
-    const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
-                    VALUES (?,?,?,?)`
-    const params = [newEmp.firstName, newEmp.lastName, newEmp.roleType, newEmp.empManager]
-    db.query(sql, params, (err, result) => {
-        if (err) {
-            console.log({ error: err.message })
-        } else {
-            console.log({
+    return new Promise (function(resolve, reject) {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) 
+                        VALUES (?,?,?,?)`
+        const params = [newEmp.firstName, newEmp.lastName, newEmp.roleId, newEmp.managerId]
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                reject({ error: err.message })
+            } else {
+                resolve({
+                    status: "success",
+                    data: newEmp
+                })
+            }
+        })
+    })
+}
+
+// ======================================================================
+// GET EMP ID BY FIRST AND LAST NAME
+// ======================================================================
+const getEmpId = data => {
+    return new Promise (function(resolve, reject) {
+        const sql = `SELECT id FROM employee WHERE first_name = ? AND last_name = ?;`
+        params = [data[0], data[data.length - 1]]
+        // console.log(data)
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                reject({ error: err.messsage });
+            }
+            data.managerId = result[0].id
+            let success = ({
                 status: "success",
-                data: newEmp
+                data: data.managerId
             })
-        }
+            console.log(success)
+            resolve(success)
+        })
     })
 }
 
@@ -79,4 +104,4 @@ const addEmp = newEmp => {
 // UPDATE EMPLOYEE
 // ======================================================================
 
-module.exports = { getEmpsOrdered, addEmp }
+module.exports = { getEmpsOrdered, addEmp, getEmpId }

@@ -3,7 +3,9 @@ const db = require("../db/connection");
 const table = require('console.table');
 
 
-// Show Roles
+// ======================================================================
+// GET ROLES
+// ======================================================================
 const getRoles = () => {
     return new Promise (function(resolve, reject) {
         const sql = `SELECT r.title AS Role, r.salary AS Salary, d.dept_name AS Department FROM role r
@@ -11,30 +13,53 @@ const getRoles = () => {
         ORDER BY d.dept_name, r.title;`
         db.query(sql, (err, rows) => {
             if (err) {
-                console.log ({ error: err.messsage });
+                reject({ error: err.messsage });
+                return;
             }
             resolve(rows)
         });
     });
 }
 
-// Add New Role
+// ======================================================================
+// ADD NEW ROLE
+// ======================================================================
 const addRole = newRole => {
-    console.log(newRole)
-    const sql = `INSERT INTO role (title, salary, department_id) 
-                    VALUES (?, ?, ?)`
-    const params = [newRole.roleName, newRole.roleSalary, newRole.id]
-    db.query(sql, params, (err, result) => {
-        if (err) {
-            console.log({ error: err.message })
-        } else {
-            console.log({
-                status: "success",
-                data: newRole
-            })
-        }
+    // console.log(newRole)
+    return new Promise (function(resolve, reject) {
+        const sql = `INSERT INTO role (title, salary, department_id) 
+                        VALUES (?, ?, ?)`
+        const params = [newRole.roleName, newRole.roleSalary, newRole.id]
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                reject({ error: err.message });
+            } else {
+                let successfulAdd =({
+                    status: "success",
+                    data: newRole
+                })
+                resolve(successfulAdd); 
+            }
+        })
     })
 }
 
+// ======================================================================
+// GET ROLE ID
+// ======================================================================
+const getRoleId = data => {
+    return new Promise (function(resolve, reject) {
+        const sql = `SELECT id FROM role WHERE title = ?;`
+        params = [data.roleType]
+        console.log(data)
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                reject({ error: err.messsage });
+            }
+            data.roleId = result[0].id
+            resolve(data)
+        })
+    })
+}
 
-module.exports = { getRoles, addRole }
+module.exports = { getRoles, addRole, getRoleId }
