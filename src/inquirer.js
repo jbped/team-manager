@@ -9,7 +9,7 @@ const mainMenu = [
         type: "list",
         name: "mainMenu",
         message: "Select one from the list below:",
-        choices: ["Show Employees", "Show All Departments", "Show All Roles", new inquirer.Separator(), "Add New Employee", "Add New Department", "Add New Role", new inquirer.Separator(), "Update Employee Role", new inquirer.Separator(),"EXIT APPLICATION", new inquirer.Separator()]
+        choices: ["Show Employees", "Show All Departments", "Show All Roles", new inquirer.Separator(), "Add New Employee", "Add New Department", "Add New Role", new inquirer.Separator(), "Update Employee", new inquirer.Separator(),"EXIT APPLICATION", new inquirer.Separator()]
     }
 ]
 
