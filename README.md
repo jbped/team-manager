@@ -3,12 +3,15 @@
 ## Description
 Team Manager is a CLI application that allows the user to manage the employees, roles, salaries, and departments of their company. It offers the ability to view al employees, roles, departments, and add new ones as well. This simple tool can provide assistance in managing small and large groups of employees.
 
+![Team Manager](https://user-images.githubusercontent.com/76881086/126098667-88518c88-df2c-4578-bd44-2e6952637d05.png)
+
 ## Table of Contents
 * [Installation](#installation)
 * [Usage](#usage)
 * [License](#license)
 * [Credits](#credits)
 * [Contributions](#contributions)
+* [Questions](#questions)
 
 ## Installation
 1. Ensure that you are able to create a new SQL Database (I used [MySQL Server](https://dev.mysql.com/downloads/mysql/)) 
