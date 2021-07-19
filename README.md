@@ -21,7 +21,13 @@ Team Manager is a CLI application that allows the user to manage the employees, 
 5. Navigate to the ".env EXAMPLE" file 
 6. Edit the DB_USER and DB_PASS values to match your SQL Server credentials. 
 7. Rename the ".env EXAMPLE" file to ".env"
-8. The application can now be used.
+8. Return to your open command line, load the schema.sql to create the appropriate database and tables.
+    * In MySQL this can be done by:
+    * `mysql -u {user} -p`
+    * Enter your MySQL password
+    * `source ./db/schema.sql;`
+    * If you wish to populate the application with test employees you can do so by using: `source .db/seeds.sql;`
+9. The application can now be used.
 
 ## Usage
 Once the application has been installed, open a new command line within the repository's directory, enter the command `node index`. Team Manager is now running. Use your arrow buttons to navigate the main menu and press enter once you have found the option you want to use. When you no longer wish to use the program use the "EXIT APPLICATION" option. Team Manager will then close.
