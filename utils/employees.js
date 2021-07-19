@@ -158,7 +158,7 @@ const updateEmpName = data => {
 // ======================================================================
 const updateEmpRole = data => {
     return new Promise (function(resolve, reject) {
-        console.log(data)
+        // console.log(data)
         const sql = `UPDATE employee SET role_id = ? WHERE id = ?;`
         params = [data.roleId, data.empId]
         // console.log(data)

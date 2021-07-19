@@ -57,7 +57,7 @@ function newEmployee() {
             return r.getRoleId(data) 
         })
         .then(data => {
-            console.log(data)
+            // console.log(data)
             if (data.empManager === "No Manager") {
                 data.empManager = null;
                 return e.addEmp(data)
@@ -94,7 +94,8 @@ function newDepartment() {
             return d.addDept(newDept)
         })
         .then(data => {
-            resolve(console.log("\n" + data.data.deptName + " has been added as a department!"+ "\n"));
+            // console.log(data)
+            resolve(console.log("\n" + data.data + " has been added as a department!"+ "\n"));
         })
         .catch(err => {
             reject(err);
@@ -166,7 +167,7 @@ function updateEmployee() {
                     return e.updateEmpRole(newData)
                 })
                 .then(data => {
-                    resolve(console.log("\n" + data.data.selectEmp + "'s role has been updated to " + data.data.roleType+ "\n"));
+                    resolve(console.log("\n" + data.data.selectEmp + "'s role has been updated to " + data.data.roleType + "\n"));
                 })
                 .catch(err => {
                     reject(err)
