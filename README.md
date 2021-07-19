@@ -23,6 +23,8 @@ Team Manager is a CLI application that allows the user to manage the employees, 
 ## Usage
 Once the application has been installed, open a new command line within the repository's directory, enter the command `node index`. Team Manager is now running. Use your arrow buttons to navigate the main menu and press enter once you have found the option you want to use. When you no longer wish to use the program use the "EXIT APPLICATION" option. Team Manager will then close.
 
+Here is a detailed walkthrough in the usage of the [Team Manager CLI Application](https://drive.google.com/file/d/1wm7T9etob-5uMUvtzDI2wgjU7kpxD_Uf/view)
+
 ## License
 
 MIT License
