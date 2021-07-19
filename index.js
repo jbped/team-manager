@@ -9,6 +9,8 @@ const q = require("./src/inquirer");
 // MENU LOGIC RESOURCES
 // ======================================================================
 const ml = require("./logic/menuLogic");
+const { teamManager } = require("./src/tableNames");
+const { getEmps } = require("./utils/employees")
 
 
 // ======================================================================
@@ -78,4 +80,5 @@ const quitApp = () => {
     process.exit();
 }
 
-startApp();
+console.log(teamManager)
+getEmps().then(results => {console.log("\nCurrent Team:\n");console.table(results)}).then(()=>{startApp();})

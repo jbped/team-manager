@@ -8,7 +8,7 @@ const table = require('console.table');
 // ======================================================================
 const getRoles = () => {
     return new Promise (function(resolve, reject) {
-        const sql = `SELECT r.title AS Role, r.salary AS Salary, d.dept_name AS Department FROM role r
+        const sql = `SELECT r.id AS "ID", r.title AS Role, r.salary AS Salary, d.dept_name AS Department FROM role r
         JOIN department d ON r.department_id = d.id
         ORDER BY d.dept_name, r.title;`
         db.query(sql, (err, rows) => {

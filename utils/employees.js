@@ -2,6 +2,26 @@
 const db = require("../db/connection");
 const table = require('console.table');
 
+const getEmps = () => {
+    return new Promise (function(resolve, reject) {
+        sql=`SELECT 
+        e.id AS "ID", e.first_name AS "First Name", e.last_name AS "Last Name", d.dept_name AS Department, r.title AS "Position", r.salary AS Salary, CONCAT(m.first_Name, " ", m.last_name) AS "Manager"
+        FROM employee e
+        JOIN role r ON e.role_id = r.id
+        JOIN department d ON r.department_id = d.id
+        LEFT JOIN employee m ON e.manager_id = m.id
+        ORDER BY e.first_name;`
+    
+        db.query(sql, (err, result) => {
+            if (err) {
+                reject({ error: err.message })
+                return;
+            }
+            resolve(result)
+        })
+    })
+}
+
 // ======================================================================
 // GET ORGANIZED EMPLOYEE LIST
 // ======================================================================
@@ -14,19 +34,25 @@ const getEmpsOrdered = order => {
         // Assign appropriate column name to colLiteral
         switch (order.selectCol) {
             case "ID":
-                colLiteral = "id"
+                colLiteral = "e.id"
                 break;
             case "First Name":
-                colLiteral = "first_name"
+                colLiteral = "e.first_name"
                 break;
             case "Last Name":
-                colLiteral = "last_name"
+                colLiteral = "e.last_name"
                 break;
-            case "Role":
-                colLiteral = "role_id"
+            case "Department":
+                colLiteral = "d.dept_name"
+                break;
+            case "Position":
+                colLiteral = "r.title"
+                break;
+            case "Salary":
+                colLiteral = "r.salary"
                 break;
             case "Assigned Manager":
-                colLiteral = "manager_id"
+                colLiteral = "e.manager_id"
                 break;
         }
     
@@ -41,11 +67,12 @@ const getEmpsOrdered = order => {
         }
     
         sql=`SELECT 
-        e.id AS "ID", e.first_name AS "First Name", e.last_name AS "Last Name", r.title AS "Position", CONCAT(m.first_Name, " ", m.last_name) AS "Manager"
+        e.id AS "ID", e.first_name AS "First Name", e.last_name AS "Last Name", d.dept_name AS Department, r.title AS "Position", r.salary AS Salary, CONCAT(m.first_Name, " ", m.last_name) AS "Manager"
         FROM employee e
         JOIN role r ON e.role_id = r.id
+        JOIN department d ON r.department_id = d.id
         LEFT JOIN employee m ON e.manager_id = m.id
-        ORDER BY e.${colLiteral} ${orderBy};`
+        ORDER BY ${colLiteral} ${orderBy};`
     
         db.query(sql, (err, result) => {
             if (err) {
@@ -171,4 +198,4 @@ const updateEmpManager = data => {
     })
 }
 
-module.exports = { getEmpsOrdered, addEmp, getEmpId, updateEmpName, updateEmpRole, updateEmpManager }
+module.exports = { getEmps, getEmpsOrdered, addEmp, getEmpId, updateEmpName, updateEmpRole, updateEmpManager }

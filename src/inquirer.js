@@ -21,7 +21,7 @@ const empOrderBy = [
         type: "list",
         name: "selectCol",
         message: "How would you like the employee list displayed?",
-        choices: ["ID", "First Name", "Last Name", "Role", "Assigned Manager"]
+        choices: ["ID", "First Name", "Last Name", "Department", "Position", "Salary", "Assigned Manager"]
     },
     {
         type: "list",

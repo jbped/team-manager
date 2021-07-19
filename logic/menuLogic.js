@@ -189,9 +189,9 @@ function updateEmployee() {
         })
     });   
 }
-function temp() {
-    return new Promise (function(resolve, reject) {
-    });   
-}
+// function temp() {
+//     return new Promise (function(resolve, reject) {
+//     });   
+// }
 
 module.exports = { showEmployees, showDepartments, showRoles, newEmployee, newDepartment, newRole, updateEmployee }

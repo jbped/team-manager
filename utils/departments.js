@@ -9,7 +9,7 @@ const table = require('console.table');
 // ======================================================================
 const getDept = () => {
     return new Promise (function(resolve, reject) {
-        const sql = `SELECT dept_name AS Department FROM department ORDER BY dept_name ASC;`
+        const sql = `SELECT id AS "ID", dept_name AS Department FROM department ORDER BY id;`
         db.query(sql, (err, rows) => {
             if (err) {
                 reject({ error: err.messsage });
